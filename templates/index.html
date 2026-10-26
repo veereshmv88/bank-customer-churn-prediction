@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Customer Churn Prediction & Risk Scoring | Bank Intelligence</title>
+  <!-- SEO Meta -->
+  <meta name="description" content="BANK CUSTOMER CHURN Prediction and Risk Calculator platform. Enterprise machine learning analytics for banking retention in Swiss International Typographic Style.">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <!-- Early Theme Setter to prevent flash of wrong theme (Default: light) -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem("bank_theme") || "light";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    })();
+  </script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <div class="app-wrapper">
+
+    <!-- ==================== SIDEBAR NAVIGATION ==================== -->
+    <aside class="app-sidebar" id="app-sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logotype">
+          <span class="brand-title">Bank</span>
+          <span class="brand-slash">/</span>
+          <span class="brand-title-sub">Intelligence</span>
+        </div>
+        <span class="brand-caption">Customer Risk Platform</span>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" data-view="overview">
+            <span class="nav-index">01</span>
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            </span>
+            <span>Overview</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-view="calculator">
+            <span class="nav-index">02</span>
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+            </span>
+            <span>Risk Assessment</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-view="risk-analytics">
+            <span class="nav-index">03</span>
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            </span>
+            <span>Risk Analytics</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-view="model-performance">
+            <span class="nav-index">04</span>
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            </span>
+            <span>Model Performance</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-view="explainability">
+            <span class="nav-index">05</span>
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </span>
+            <span>Explainability</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-view="what-if">
+            <span class="nav-index">06</span>
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+            </span>
+            <span>Scenario Analysis</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-view="customer-analytics">
+            <span class="nav-index">07</span>
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </span>
+            <span>Customer Insights</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-view="methodology">
+            <span class="nav-index">08</span>
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </span>
+            <span>Methodology</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="model-status-card">
+          <div class="model-status-header">
+            <div class="status-badge">
+              <span class="status-pulse"></span>
+              <span id="system-status-text">Production Online</span>
+            </div>
+            <span class="mono-label" style="font-size:9.5px; color:var(--text-muted);">v2.4</span>
+          </div>
+          <div class="model-spec-text" id="sidebar-model-info">
+            Gradient Boosting · T=0.28
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==================== MAIN VIEWPORT ==================== -->
+    <div class="main-viewport">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar-breadcrumb">
+          <span class="breadcrumb-root">Bank / Intelligence</span>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current" id="topbar-view-name">Overview</span>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="meta-pill">
+            <span>European_Bank.csv (10k records)</span>
+          </div>
+          <div class="meta-pill meta-pill-accent">
+            <span class="status-indicator"></span>
+            <span id="topbar-model-badge">Gradient Boosting (Threshold: 0.28)</span>
+          </div>
+          <button type="button" class="btn-icon" id="btn-theme-toggle" title="Toggle Light / Dark Theme" aria-label="Toggle theme">
+            <!-- Sun icon (shown in dark theme) -->
+            <svg class="theme-icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <!-- Moon icon (shown in light theme) -->
+            <svg class="theme-icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+          <button type="button" class="btn-icon" id="btn-topbar-refresh" title="Refresh Analytics Data">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- PAGE CONTENT CONTAINER -->
+      <main class="page-container">
+
+        <!-- ==================== PAGE 1: OVERVIEW ==================== -->
+        <section id="view-overview" class="view-section active">
+          
+          <!-- Editorial Hero Section -->
+          <div class="editorial-hero">
+            <div class="hero-main">
+              <span class="hero-index">CUSTOMER RETENTION & RISK INTELLIGENCE</span>
+              <h1 class="hero-headline">Understand churn.<br>Anticipate risk.</h1>
+              <p class="hero-lead">
+                Real-time churn risk estimation, behavioral attrition signals, and calibrated financial exposure across 10,000 European retail banking accounts.
+              </p>
+            </div>
+
+            <!-- Architectural Building Vector Art (Dark Palette) -->
+            <div class="hero-illustration">
+              <svg viewBox="0 0 280 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="bldgGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#283241"/>
+                    <stop offset="100%" stop-color="#1B222C"/>
+                  </linearGradient>
+                  <linearGradient id="bldgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#344154"/>
+                    <stop offset="100%" stop-color="#212A36"/>
+                  </linearGradient>
+                </defs>
+                <!-- Tower 1 -->
+                <path d="M50 25 L115 55 L115 138 L50 108 Z" fill="url(#bldgGrad1)"/>
+                <path d="M115 55 L160 32 L160 115 L115 138 Z" fill="url(#bldgGrad2)"/>
+                <path d="M50 25 L95 2 L140 10 L115 55 Z" fill="#2E394A"/>
+                <line x1="68" y1="33" x2="68" y2="116" stroke="#78D6A3" stroke-width="1.2" stroke-opacity="0.35"/>
+                <line x1="85" y1="41" x2="85" y2="124" stroke="#78D6A3" stroke-width="1.2" stroke-opacity="0.35"/>
+                <line x1="102" y1="49" x2="102" y2="132" stroke="#78D6A3" stroke-width="1.2" stroke-opacity="0.35"/>
+                <line x1="130" y1="48" x2="130" y2="131" stroke="#A5AFBC" stroke-width="1.2" stroke-opacity="0.25"/>
+                <line x1="146" y1="40" x2="146" y2="123" stroke="#A5AFBC" stroke-width="1.2" stroke-opacity="0.25"/>
+                <path d="M50 52 L115 82 L160 59" stroke="#78D6A3" stroke-width="1" stroke-opacity="0.2"/>
+                <path d="M50 78 L115 108 L160 85" stroke="#78D6A3" stroke-width="1" stroke-opacity="0.2"/>
+                <path d="M50 104 L115 134 L160 111" stroke="#78D6A3" stroke-width="1" stroke-opacity="0.2"/>
+                <!-- Tower 2 Background -->
+                <path d="M165 38 L220 62 L220 138 L165 114 Z" fill="url(#bldgGrad1)"/>
+                <path d="M220 62 L255 46 L255 122 L220 138 Z" fill="url(#bldgGrad2)"/>
+                <path d="M165 38 L200 22 L235 30 L220 62 Z" fill="#2E394A"/>
+                <line x1="185" y1="47" x2="185" y2="123" stroke="#A5AFBC" stroke-width="1" stroke-opacity="0.25"/>
+                <line x1="202" y1="54" x2="202" y2="130" stroke="#A5AFBC" stroke-width="1" stroke-opacity="0.25"/>
+                <line x1="237" y1="54" x2="237" y2="130" stroke="#A5AFBC" stroke-width="1" stroke-opacity="0.25"/>
+                <ellipse cx="150" cy="136" rx="110" ry="4" fill="#000000" fill-opacity="0.4"/>
+              </svg>
+            </div>
+
+            <div class="hero-spec-box">
+              <div class="spec-title">Portfolio Specifications</div>
+              <div class="spec-list">
+                <div class="spec-row">
+                  <span class="spec-key">AUDIT DATASET:</span>
+                  <span class="spec-val">European_Bank.csv</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-key">TOTAL ACCOUNTS:</span>
+                  <span class="spec-val">10,000 Records</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-key">MODEL PIPELINE:</span>
+                  <span class="spec-val">Gradient Boosting</span>
+                </div>
+                <div class="spec-row">
+                  <span class="spec-key">OPTIMAL THRESHOLD:</span>
+                  <span class="spec-val">0.28 (Recall Tuned)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Horizontally Aligned 4-Card KPI Row -->
+          <div class="kpi-cards-grid">
+            <!-- Card 1: Total Customers -->
+            <div class="kpi-card-single">
+              <div class="kpi-card-header">
+                <div class="kpi-card-icon">
+                  <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                </div>
+                <span class="kpi-card-label">Total Customers</span>
+              </div>
+              <span class="kpi-value" id="kpi-total-cust">10,000</span>
+              <span class="kpi-caption">Audited active accounts</span>
+            </div>
+
+            <!-- Card 2: Historical Churn Rate -->
+            <div class="kpi-card-single">
+              <div class="kpi-card-header">
+                <div class="kpi-card-icon" style="color: var(--risk-med);">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                </div>
+                <span class="kpi-card-label">Historical Churn Rate</span>
+              </div>
+              <span class="kpi-value" id="kpi-churn-rate">20.37%</span>
+              <span class="kpi-caption">Baseline customer attrition</span>
+            </div>
+
+            <!-- Card 3: Retained Customers -->
+            <div class="kpi-card-single">
+              <div class="kpi-card-header">
+                <div class="kpi-card-icon" style="color: var(--risk-low);">
+                  <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                </div>
+                <span class="kpi-card-label">Retained Accounts</span>
+              </div>
+              <span class="kpi-value" style="color: var(--risk-low);" id="kpi-retained">7,963</span>
+              <span class="kpi-caption">Class 0 retained (<span id="kpi-churned" style="font-weight:600;">2,037</span> churned)</span>
+            </div>
+
+            <!-- Card 4: Predicted High-Risk -->
+            <div class="kpi-card-single">
+              <div class="kpi-card-header">
+                <div class="kpi-card-icon" style="color: var(--risk-high);">
+                  <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <span class="kpi-card-label">Predicted High-Risk</span>
+              </div>
+              <span class="kpi-value" style="color: var(--risk-high);" id="kpi-high-risk">1,232</span>
+              <span class="kpi-caption">Probability &ge; 50.0%</span>
+            </div>
+          </div>
+
+          <!-- Main Analytics 2x2 Grid -->
+          <div class="grid-2">
+            <!-- 1. Retention & Churn at a Glance -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Retention & Churn at a Glance</h2>
+                  <span class="card-subtitle">Historical portfolio ratio (N=10,000)</span>
+                </div>
+                <span class="mono-label" style="color: var(--text-muted);">RATIO</span>
+              </div>
+              <!-- Horizontal Split Bar -->
+              <div class="split-ratio-bar">
+                <div class="split-bar-retained">79.6% (7,963)</div>
+                <div class="split-bar-churned">20.4%</div>
+              </div>
+              <div class="split-legend-row">
+                <div class="split-legend-item">
+                  <span class="split-legend-dot" style="background-color: var(--risk-low);"></span>
+                  <span>Retained Accounts (7,963)</span>
+                </div>
+                <div class="split-legend-item">
+                  <span class="split-legend-dot" style="background-color: var(--risk-high);"></span>
+                  <span>Churned Accounts (2,037)</span>
+                </div>
+              </div>
+              <div class="chart-box" style="height: 175px; margin-top: 10px;">
+                <canvas id="chart-overview-donut"></canvas>
+              </div>
+            </div>
+
+            <!-- 2. Churn by Geography -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">% Churn by Geography</h2>
+                  <span class="card-subtitle">Attrition comparison across regional markets</span>
+                </div>
+                <span class="mono-label" style="color: var(--text-muted);">REGIONAL</span>
+              </div>
+              <div class="chart-box" style="height: 250px;">
+                <canvas id="chart-overview-geo"></canvas>
+              </div>
+            </div>
+
+            <!-- 3. Churn by Age Group -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Churn by Age Group</h2>
+                  <span class="card-subtitle">Empirical attrition density by demographic bracket</span>
+                </div>
+                <span class="mono-label" style="color: var(--text-muted);">DEMOGRAPHIC</span>
+              </div>
+              <div class="chart-box" style="height: 250px;">
+                <canvas id="chart-overview-age"></canvas>
+              </div>
+            </div>
+
+            <!-- 4. Active Status Impact -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Active Status Impact</h2>
+                  <span class="card-subtitle">Engagement effect on churn probability</span>
+                </div>
+                <span class="mono-label" style="color: var(--text-muted);">ENGAGEMENT</span>
+              </div>
+              <div class="chart-box" style="height: 250px;">
+                <canvas id="chart-overview-active"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Dark Strategic Insights Panel -->
+          <div class="card-dark-editorial" style="margin-top: 8px;">
+            <div class="card-header" style="border-bottom-color: var(--border-dark);">
+              <div>
+                <span class="mono-label" style="color: var(--accent-primary); font-size: 10px; display: block; margin-bottom: 2px;">PORTFOLIO INTELLIGENCE</span>
+                <h2 class="card-title" style="color: #FFFFFF; font-size: 16px;">Key Strategic Insights</h2>
+              </div>
+              <span class="mono-label" style="color: var(--text-inverse-muted);">AUDIT N=10k</span>
+            </div>
+            <div class="dark-obs-grid">
+              <div class="dark-obs-item">
+                <div class="dark-obs-index">
+                  <svg style="width:12px; height:12px; display:inline-block; vertical-align:middle; margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                  REGIONAL VULNERABILITY
+                </div>
+                <div class="dark-obs-title">German Exposure (32.4%)</div>
+                <div class="dark-obs-desc">Germany accounts exhibit an elevated 32.4% attrition rate, over 2&times; France (16.1%) and Spain (16.7%), driven by higher average balance concentration.</div>
+              </div>
+              <div class="dark-obs-item">
+                <div class="dark-obs-index">
+                  <svg style="width:12px; height:12px; display:inline-block; vertical-align:middle; margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                  AGE-DRIVEN ATTRITION
+                </div>
+                <div class="dark-obs-title">Peak Churn in 51–60 Cohort</div>
+                <div class="dark-obs-desc">Customers aged 51–60 face peak churn of 56.2%, indicating senior depositor vulnerability that warrants high-touch relationship management.</div>
+              </div>
+              <div class="dark-obs-item">
+                <div class="dark-obs-index">
+                  <svg style="width:12px; height:12px; display:inline-block; vertical-align:middle; margin-right:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                  MULTI-PRODUCT FRICTION
+                </div>
+                <div class="dark-obs-title">Product Density Paradox</div>
+                <div class="dark-obs-desc">Holding 3 or 4 products correlates with severe attrition (&gt;80%), pointing to friction with complex bundled fees rather than deeper customer loyalty.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== PAGE 2: RISK ASSESSMENT (CALCULATOR) ==================== -->
+        <section id="view-calculator" class="view-section">
+          <div class="view-header">
+            <h1 class="view-title">Customer Risk Assessment</h1>
+            <p class="view-subtitle">Estimate churn probability from an individual customer profile using the trained machine learning pipeline.</p>
+          </div>
+
+          <div class="assessment-split">
+            <!-- LEFT PANEL: Customer Profile -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Customer Profile</h2>
+                  <span class="card-subtitle">Enter customer account attributes for model scoring</span>
+                </div>
+                <span class="mono-label" style="color: var(--text-muted);">INPUT STUDIO</span>
+              </div>
+
+              <!-- Presets -->
+              <div class="preset-bar">
+                <span class="mono-label" style="color: var(--text-secondary); margin-right: 4px;">PRESETS:</span>
+                <button type="button" class="preset-chip calc-preset-btn" data-preset-idx="0">[ 01 / LOW RISK ]</button>
+                <button type="button" class="preset-chip calc-preset-btn" data-preset-idx="1">[ 02 / MEDIUM RISK ]</button>
+                <button type="button" class="preset-chip calc-preset-btn" data-preset-idx="2">[ 03 / HIGH RISK ]</button>
+              </div>
+
+              <form id="form-calculator">
+                <!-- 01 — Personal Profile -->
+                <div class="form-section-header">
+                  <span>01</span> — Personal Profile
+                </div>
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label class="form-label" for="calc-geo">Geography</label>
+                    <select id="calc-geo" class="form-select" required>
+                      <option value="France">France</option>
+                      <option value="Germany">Germany</option>
+                      <option value="Spain">Spain</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="calc-gender">Gender</label>
+                    <select id="calc-gender" class="form-select" required>
+                      <option value="Female">Female</option>
+                      <option value="Male">Male</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="calc-age">Age (18–100)</label>
+                    <input type="number" id="calc-age" class="form-input" min="18" max="100" value="42" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="calc-tenure">Tenure (Years, 0–10)</label>
+                    <input type="number" id="calc-tenure" class="form-input" min="0" max="10" value="5" required>
+                  </div>
+                </div>
+
+                <!-- 02 — Financial Profile -->
+                <div class="form-section-header">
+                  <span>02</span> — Financial Profile
+                </div>
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label class="form-label" for="calc-credit">Credit Score (300–850)</label>
+                    <input type="number" id="calc-credit" class="form-input" min="300" max="850" value="650" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="calc-balance">Account Balance (€)</label>
+                    <input type="number" id="calc-balance" class="form-input" min="0" step="100" value="75000" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="calc-salary">Estimated Salary (€)</label>
+                    <input type="number" id="calc-salary" class="form-input" min="0" step="500" value="85000" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="calc-products">Number of Products (1–4)</label>
+                    <input type="number" id="calc-products" class="form-input" min="1" max="4" value="2" required>
+                  </div>
+                </div>
+
+                <!-- 03 — Banking Relationship -->
+                <div class="form-section-header">
+                  <span>03</span> — Banking Relationship
+                </div>
+                <div class="checkbox-row">
+                  <label class="checkbox-control">
+                    <input type="checkbox" id="calc-crcard" checked>
+                    <span>Has Credit Card</span>
+                  </label>
+                  <label class="checkbox-control">
+                    <input type="checkbox" id="calc-active" checked>
+                    <span>Active Member</span>
+                  </label>
+                </div>
+
+                <div id="calc-error-box" style="display:none; color: var(--risk-high); font-size: 12.5px; margin-top: 12px;"></div>
+
+                <div style="margin-top: 24px;">
+                  <button type="submit" id="btn-calc-submit" class="btn-primary" style="width: 100%;">
+                    Assess Customer Risk &rarr;
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- RIGHT PANEL: Risk Assessment Output -->
+            <div class="result-card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Risk Assessment</h2>
+                  <span class="card-subtitle">Model prediction output</span>
+                </div>
+                <span class="mono-label" style="color: var(--text-muted);">TERMINAL</span>
+              </div>
+
+              <!-- Neutral Empty State -->
+              <div id="calc-empty-state" class="empty-state">
+                <div class="empty-icon">
+                  <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <span class="empty-title">Awaiting Profile Evaluation</span>
+                <span class="empty-caption">Enter customer profile parameters or select a sample preset to generate calibrated churn probability.</span>
+              </div>
+
+              <!-- Active Result Container -->
+              <div id="calc-result-content" class="result-content">
+                <div class="metric-hero">
+                  <div class="metric-hero-label">Estimated Churn Probability</div>
+                  <div class="metric-hero-number" id="res-probability">--%</div>
+                  
+                  <!-- Swiss Calibrated Gauge -->
+                  <div class="progress-container">
+                    <div class="progress-track">
+                      <div class="progress-fill" id="res-progress-fill" style="width: 0%;"></div>
+                      <!-- Optimal Threshold Marker at 28% -->
+                      <div class="progress-threshold-marker" style="left: 28%;" title="Optimal Decision Threshold: 0.28"></div>
+                    </div>
+                    <div class="progress-scale">
+                      <span>0%</span>
+                      <span style="color: var(--text-primary); font-weight:600;">Threshold: 28%</span>
+                      <span>100%</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="score-row">
+                  <div class="score-col">
+                    <span class="kpi-label">Risk Score</span>
+                    <span style="font-size: 20px; font-weight: 800;" class="num-tabular" id="res-score">-- / 100</span>
+                  </div>
+                  <div class="score-col" style="align-items: flex-end;">
+                    <span class="kpi-label">Risk Category</span>
+                    <span id="res-category-badge" class="badge-risk low">LOW RISK</span>
+                  </div>
+                </div>
+
+                <div style="padding-top: 10px; font-size: 12.5px; color: var(--text-secondary); margin-bottom: 16px;">
+                  <div>Classification Decision: <strong id="res-predicted-class" style="color: var(--text-primary);">--</strong></div>
+                  <div style="margin-top: 3px; font-size: 11.5px; font-family: var(--font-mono); color: var(--text-muted);" id="res-model-used">Model: --</div>
+                </div>
+
+                <!-- Explanation Breakdown -->
+                <div class="factors-section">
+                  <div class="form-section-header" style="margin-top: 0; margin-bottom: 8px;">
+                    Why this prediction? (Key Attributes)
+                  </div>
+                  <div id="res-factors-list">
+                    <span style="font-size: 12px; color: var(--text-muted);">Submit customer details to view factor attribution.</span>
+                  </div>
+                </div>
+
+                <div class="callout-box">
+                  <strong>Regulatory Notice:</strong> Predictions are statistical estimations derived from historical patterns. They support, rather than replace, human underwriter review.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== PAGE 3: RISK ANALYTICS ==================== -->
+        <section id="view-risk-analytics" class="view-section">
+          <div class="view-header">
+            <h1 class="view-title">Portfolio Risk</h1>
+            <p class="view-subtitle">Understand the distribution of model-estimated customer churn risk across the entire customer portfolio.</p>
+          </div>
+
+          <!-- KPI Row -->
+          <div class="kpi-matrix" style="margin-bottom: 24px;">
+            <div class="kpi-matrix-cell">
+              <div class="kpi-matrix-top">
+                <span class="kpi-label">Low Risk Accounts</span>
+                <span class="kpi-index">01</span>
+              </div>
+              <span class="kpi-value" style="color: var(--risk-low);" id="ra-low-risk">7,525</span>
+              <span class="kpi-caption">Probability &lt; 25.0%</span>
+            </div>
+            <div class="kpi-matrix-cell">
+              <div class="kpi-matrix-top">
+                <span class="kpi-label">Medium Risk Accounts</span>
+                <span class="kpi-index">02</span>
+              </div>
+              <span class="kpi-value" style="color: var(--risk-med);" id="ra-med-risk">1,243</span>
+              <span class="kpi-caption">Probability 25.0% – 49.9%</span>
+            </div>
+            <div class="kpi-matrix-cell">
+              <div class="kpi-matrix-top">
+                <span class="kpi-label">High Risk Accounts</span>
+                <span class="kpi-index">03</span>
+              </div>
+              <span class="kpi-value" style="color: var(--risk-high);" id="ra-high-risk">1,232</span>
+              <span class="kpi-caption">Probability &ge; 50.0%</span>
+            </div>
+            <div class="kpi-matrix-cell">
+              <div class="kpi-matrix-top">
+                <span class="kpi-label">Average Predicted Risk</span>
+                <span class="kpi-index">04</span>
+              </div>
+              <span class="kpi-value" id="ra-avg-prob">20.42%</span>
+              <span class="kpi-caption">Portfolio expected churn rate</span>
+            </div>
+          </div>
+
+          <!-- Charts Grid -->
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Predicted Probability Distribution</h2>
+                  <span class="card-subtitle">Customer volume across probability bands</span>
+                </div>
+                <span class="mono-label" style="color: var(--text-muted);">HISTOGRAM</span>
+              </div>
+              <div class="chart-box">
+                <canvas id="chart-ra-histogram"></canvas>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Risk Category Distribution</h2>
+                  <span class="card-subtitle">Portfolio segmentation by operational tier</span>
+                </div>
+                <span class="mono-label" style="color: var(--text-muted);">SEGMENTATION</span>
+              </div>
+              <div class="chart-box">
+                <canvas id="chart-ra-donut"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Probability Band Ledger Table -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Probability Band Breakdown</h2>
+                <span class="card-subtitle">Audited customer volume and portfolio proportion across risk intervals</span>
+              </div>
+              <span class="mono-label" style="color: var(--text-muted);">LEDGER</span>
+            </div>
+            <div class="table-container">
+              <table class="clean-table">
+                <thead>
+                  <tr>
+                    <th>Probability Interval</th>
+                    <th>Accounts Count</th>
+                    <th>Portfolio Share (%)</th>
+                    <th>Operational Risk Tier</th>
+                  </tr>
+                </thead>
+                <tbody id="table-risk-bands-body">
+                  <tr>
+                    <td><strong>0% – 10%</strong></td>
+                    <td class="num-tabular">4,638</td>
+                    <td class="num-tabular">46.38%</td>
+                    <td><span class="badge-risk low">LOW RISK</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>10% – 25%</strong></td>
+                    <td class="num-tabular">2,887</td>
+                    <td class="num-tabular">28.87%</td>
+                    <td><span class="badge-risk low">LOW RISK</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>25% – 50%</strong></td>
+                    <td class="num-tabular">1,243</td>
+                    <td class="num-tabular">12.43%</td>
+                    <td><span class="badge-risk medium">MEDIUM RISK</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>50% – 75%</strong></td>
+                    <td class="num-tabular">583</td>
+                    <td class="num-tabular">5.83%</td>
+                    <td><span class="badge-risk high">HIGH RISK</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>75% – 100%</strong></td>
+                    <td class="num-tabular">649</td>
+                    <td class="num-tabular">6.49%</td>
+                    <td><span class="badge-risk high">CRITICAL RISK</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== PAGE 4: MODEL PERFORMANCE ==================== -->
+        <section id="view-model-performance" class="view-section">
+          <div class="view-header">
+            <h1 class="view-title">Model Evaluation</h1>
+            <p class="view-subtitle">Understand how well the trained model distinguishes churned and retained customers.</p>
+          </div>
+
+          <!-- Selected Model Metrics Strip -->
+          <div class="kpi-matrix" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 24px;">
+            <div class="kpi-matrix-cell">
+              <div class="kpi-matrix-top">
+                <span class="kpi-label">ROC-AUC</span>
+                <span class="kpi-index">01</span>
+              </div>
+              <span class="kpi-value" style="font-size: 26px; color: var(--accent-primary);">0.8690</span>
+              <span class="kpi-caption">Discriminant power</span>
+            </div>
+            <div class="kpi-matrix-cell">
+              <div class="kpi-matrix-top">
+                <span class="kpi-label">PR-AUC</span>
+                <span class="kpi-index">02</span>
+              </div>
+              <span class="kpi-value" style="font-size: 26px;">0.7184</span>
+              <span class="kpi-caption">Average precision</span>
+            </div>
+            <div class="kpi-matrix-cell">
+              <div class="kpi-matrix-top">
+                <span class="kpi-label">Precision</span>
+                <span class="kpi-index">03</span>
+              </div>
+              <span class="kpi-value" style="font-size: 26px;">61.02%</span>
+              <span class="kpi-caption">At threshold 0.28</span>
+            </div>
+            <div class="kpi-matrix-cell">
+              <div class="kpi-matrix-top">
+                <span class="kpi-label">Recall</span>
+                <span class="kpi-index">04</span>
+              </div>
+              <span class="kpi-value" style="font-size: 26px;">67.32%</span>
+              <span class="kpi-caption">274 of 407 churners</span>
+            </div>
+            <div class="kpi-matrix-cell">
+              <div class="kpi-matrix-top">
+                <span class="kpi-label">Brier Score</span>
+                <span class="kpi-index">05</span>
+              </div>
+              <span class="kpi-value" style="font-size: 26px; color: var(--risk-low);">0.0994</span>
+              <span class="kpi-caption">Probability calibration</span>
+            </div>
+          </div>
+
+          <!-- Clean Tab Navigation -->
+          <div class="card">
+            <div class="tab-nav">
+              <button type="button" class="tab-btn active" data-tab="tab-comp">Model Comparison</button>
+              <button type="button" class="tab-btn" data-tab="tab-cm">Confusion Matrix</button>
+              <button type="button" class="tab-btn" data-tab="tab-roc">ROC Curve</button>
+              <button type="button" class="tab-btn" data-tab="tab-pr">Precision-Recall Curve</button>
+              <button type="button" class="tab-btn" data-tab="tab-calib">Calibration</button>
+            </div>
+
+            <!-- Tab 1: Comparison Table -->
+            <div id="tab-comp" class="tab-panel active">
+              <div class="table-container">
+                <table class="clean-table">
+                  <thead>
+                    <tr>
+                      <th>Model Architecture</th>
+                      <th>Accuracy</th>
+                      <th>Precision</th>
+                      <th>Recall</th>
+                      <th>F1-Score</th>
+                      <th>ROC-AUC</th>
+                      <th>PR-AUC</th>
+                    </tr>
+                  </thead>
+                  <tbody id="table-model-comp-body">
+                    <tr><td colspan="7" style="color: var(--text-muted);">Loading evaluation benchmarks...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Tab 2: Confusion Matrix -->
+            <div id="tab-cm" class="tab-panel">
+              <p style="font-size: 13px; color: var(--text-secondary); text-align: center; margin-bottom: 16px;">
+                Evaluated on 2,000 isolated test records (Operating threshold <strong>0.28</strong>):
+              </p>
+              <div class="matrix-grid">
+                <div class="matrix-card">
+                  <div class="matrix-label">True Negatives (TN)</div>
+                  <div class="matrix-value" style="color: var(--risk-low);" id="cm-tn">1,418</div>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Correctly Retained</div>
+                </div>
+                <div class="matrix-card">
+                  <div class="matrix-label">False Positives (FP)</div>
+                  <div class="matrix-value" style="color: var(--risk-med);" id="cm-fp">175</div>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">False Alarms</div>
+                </div>
+                <div class="matrix-card">
+                  <div class="matrix-label">False Negatives (FN)</div>
+                  <div class="matrix-value" style="color: var(--risk-high);" id="cm-fn">133</div>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Missed Churners</div>
+                </div>
+                <div class="matrix-card">
+                  <div class="matrix-label">True Positives (TP)</div>
+                  <div class="matrix-value" style="color: var(--accent-primary);" id="cm-tp">274</div>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Correctly Flagged Churners</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 3: ROC Curve -->
+            <div id="tab-roc" class="tab-panel">
+              <div class="chart-box" style="height: 320px;">
+                <canvas id="chart-perf-roc"></canvas>
+              </div>
+            </div>
+
+            <!-- Tab 4: PR Curve -->
+            <div id="tab-pr" class="tab-panel">
+              <div class="chart-box" style="height: 320px;">
+                <canvas id="chart-perf-pr"></canvas>
+              </div>
+            </div>
+
+            <!-- Tab 5: Calibration Curve -->
+            <div id="tab-calib" class="tab-panel">
+              <div class="chart-box" style="height: 320px;">
+                <canvas id="chart-perf-calib"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== PAGE 5: EXPLAINABILITY ==================== -->
+        <section id="view-explainability" class="view-section">
+          <div class="view-header">
+            <h1 class="view-title">Model Explainability</h1>
+            <p class="view-subtitle">Understand which customer attributes influence model predictions globally and locally.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Global Feature Importance</h2>
+                <span class="card-subtitle">Relative contribution across ensemble decision trees</span>
+              </div>
+              <span class="mono-label" style="color: var(--text-muted);">TOP 10 ATTRIBUTES</span>
+            </div>
+            <div class="chart-box" style="height: 340px;">
+              <canvas id="chart-explain-importance"></canvas>
+            </div>
+          </div>
+
+          <div class="callout-box">
+            <strong>Important Principle:</strong> Feature importance describes model behaviour and does not establish causation. High importance indicates statistical correlation within the historical training data.
+          </div>
+        </section>
+
+        <!-- ==================== PAGE 6: SCENARIO ANALYSIS ==================== -->
+        <section id="view-what-if" class="view-section">
+          <div class="view-header">
+            <h1 class="view-title">Scenario Analysis</h1>
+            <p class="view-subtitle">Compare model-estimated churn risk under alternative customer profiles.</p>
+          </div>
+
+          <!-- Scenario Summary Bar -->
+          <div class="scenario-summary-bar">
+            <div>
+              <span class="kpi-label">Probability Difference (Scenario &minus; Current)</span>
+              <div class="delta-display">
+                <span class="delta-number dec" id="whatif-delta-val">0.00% pts</span>
+                <span style="font-size: 13px; color: var(--text-secondary);" id="whatif-summary-text">Adjust values to simulate changes.</span>
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button type="button" id="btn-whatif-sync" class="btn-secondary">Reset to Current Profile</button>
+              <button type="button" id="btn-whatif-run" class="btn-primary">Run Scenario Comparison &rarr;</button>
+            </div>
+          </div>
+
+          <div id="whatif-error-box" style="display:none; color: var(--risk-high); margin-bottom: 14px;"></div>
+
+          <!-- Side-by-Side Profiles -->
+          <div class="grid-2">
+            <!-- Current Profile -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Current Profile</h2>
+                  <span class="card-subtitle">Baseline attributes</span>
+                </div>
+                <span id="whatif-curr-cat" class="badge-risk low">LOW RISK</span>
+              </div>
+              <div style="display: flex; gap: 24px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color);">
+                <div>
+                  <span class="kpi-label">Probability</span>
+                  <div style="font-size: 22px; font-weight: 800;" class="num-tabular" id="whatif-curr-prob">--%</div>
+                </div>
+                <div>
+                  <span class="kpi-label">Risk Score</span>
+                  <div style="font-size: 22px; font-weight: 800;" class="num-tabular" id="whatif-curr-score">-- / 100</div>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="curr-geo">Geography</label>
+                  <select id="curr-geo" class="form-select">
+                    <option value="France">France</option>
+                    <option value="Germany" selected>Germany</option>
+                    <option value="Spain">Spain</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="curr-gender">Gender</label>
+                  <select id="curr-gender" class="form-select">
+                    <option value="Female" selected>Female</option>
+                    <option value="Male">Male</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="curr-age">Age</label>
+                  <input type="number" id="curr-age" class="form-input" value="48">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="curr-tenure">Tenure</label>
+                  <input type="number" id="curr-tenure" class="form-input" value="4">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="curr-balance">Balance (€)</label>
+                  <input type="number" id="curr-balance" class="form-input" value="115000">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="curr-salary">Salary (€)</label>
+                  <input type="number" id="curr-salary" class="form-input" value="80000">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="curr-credit">Credit Score</label>
+                  <input type="number" id="curr-credit" class="form-input" value="610">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="curr-products">Products</label>
+                  <input type="number" id="curr-products" class="form-input" value="3">
+                </div>
+              </div>
+              <div class="checkbox-row" style="margin-top: 14px;">
+                <label class="checkbox-control">
+                  <input type="checkbox" id="curr-crcard" checked>
+                  <span>Credit Card</span>
+                </label>
+                <label class="checkbox-control">
+                  <input type="checkbox" id="curr-active">
+                  <span>Active Member</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Scenario Profile -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Scenario Profile</h2>
+                  <span class="card-subtitle">Alternative attributes</span>
+                </div>
+                <span id="whatif-scen-cat" class="badge-risk medium">MEDIUM RISK</span>
+              </div>
+              <div style="display: flex; gap: 24px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color);">
+                <div>
+                  <span class="kpi-label">Scenario Probability</span>
+                  <div style="font-size: 22px; font-weight: 800;" class="num-tabular" id="whatif-scen-prob">--%</div>
+                </div>
+                <div>
+                  <span class="kpi-label">Scenario Score</span>
+                  <div style="font-size: 22px; font-weight: 800;" class="num-tabular" id="whatif-scen-score">-- / 100</div>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="scen-geo">Geography</label>
+                  <select id="scen-geo" class="form-select">
+                    <option value="France">France</option>
+                    <option value="Germany" selected>Germany</option>
+                    <option value="Spain">Spain</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="scen-gender">Gender</label>
+                  <select id="scen-gender" class="form-select">
+                    <option value="Female" selected>Female</option>
+                    <option value="Male">Male</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="scen-age">Age</label>
+                  <input type="number" id="scen-age" class="form-input" value="48">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="scen-tenure">Tenure</label>
+                  <input type="number" id="scen-tenure" class="form-input" value="4">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="scen-balance">Balance (€)</label>
+                  <input type="number" id="scen-balance" class="form-input" value="115000">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="scen-salary">Salary (€)</label>
+                  <input type="number" id="scen-salary" class="form-input" value="80000">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="scen-credit">Credit Score</label>
+                  <input type="number" id="scen-credit" class="form-input" value="610">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="scen-products">Products</label>
+                  <input type="number" id="scen-products" class="form-input" value="2">
+                </div>
+              </div>
+              <div class="checkbox-row" style="margin-top: 14px;">
+                <label class="checkbox-control">
+                  <input type="checkbox" id="scen-crcard" checked>
+                  <span>Credit Card</span>
+                </label>
+                <label class="checkbox-control">
+                  <input type="checkbox" id="scen-active" checked>
+                  <span>Active Member</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scenario Comparison Chart -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Scenario Comparison Chart</h2>
+              <span class="mono-label" style="color: var(--text-muted);">DELTA VISUALIZATION</span>
+            </div>
+            <div class="chart-box">
+              <canvas id="chart-whatif-compare"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== PAGE 7: CUSTOMER INSIGHTS ==================== -->
+        <section id="view-customer-analytics" class="view-section">
+          <div class="view-header">
+            <h1 class="view-title">Customer Insights</h1>
+            <p class="view-subtitle">Explore historical patterns and behavioral attrition drivers across retail cohorts.</p>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Products vs Churn</h2>
+                  <span class="card-subtitle">Attrition rate by active bank services utilized</span>
+                </div>
+                <span class="mono-label" style="color: var(--text-muted);">FIG 7.1</span>
+              </div>
+              <div class="chart-box">
+                <canvas id="chart-ca-products"></canvas>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">Credit Card Status vs Churn</h2>
+                  <span class="card-subtitle">Holding a credit card vs account longevity</span>
+                </div>
+                <span class="mono-label" style="color: var(--text-muted);">FIG 7.2</span>
+              </div>
+              <div class="chart-box">
+                <canvas id="chart-ca-creditcard"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Gender vs Churn</h2>
+                <span class="card-subtitle">Attrition comparison across demographic cohorts</span>
+              </div>
+              <span class="mono-label" style="color: var(--text-muted);">FIG 7.3</span>
+            </div>
+            <div class="chart-box">
+              <canvas id="chart-ca-gender"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== PAGE 8: METHODOLOGY ==================== -->
+        <section id="view-methodology" class="view-section">
+          <div class="view-header">
+            <h1 class="view-title">Methodology</h1>
+            <p class="view-subtitle">Technical documentation of the machine learning pipeline, validation methodology, and responsible AI practices.</p>
+          </div>
+
+          <div class="card">
+            <div class="methodology-entry">
+              <h3 class="methodology-heading"><span>01</span> Project Objective</h3>
+              <p class="methodology-text">The objective is to accurately estimate individual customer churn probability (<code>Exited = 1</code>) and generate actionable operational risk scores (0–100) to support proactive retention workflows.</p>
+            </div>
+
+            <div class="methodology-entry">
+              <h3 class="methodology-heading"><span>02</span> Dataset & Hygiene</h3>
+              <p class="methodology-text">Audited on 10,000 complete customer accounts (<code>European_Bank.csv</code>). Customer identifiers (<code>CustomerId</code>, <code>Surname</code>, <code>Year</code>) are strictly quarantined to eliminate target leakage.</p>
+            </div>
+
+            <div class="methodology-entry">
+              <h3 class="methodology-heading"><span>03</span> Preprocessing & Feature Engineering</h3>
+              <p class="methodology-text">A Scikit-Learn <code>ColumnTransformer</code> is used for median imputation, standard scaling, and one-hot encoding. Five engineered features capture balance-salary concentration, relationship duration interaction, and product velocity.</p>
+            </div>
+
+            <div class="methodology-entry">
+              <h3 class="methodology-heading"><span>04</span> Model Training & Evaluation</h3>
+              <p class="methodology-text">Five candidate models (Logistic Regression, Decision Tree, Random Forest, Gradient Boosting, XGBoost) were benchmarked via 5-Fold Stratified Cross-Validation on 8,000 training samples. The final tuned Gradient Boosting pipeline achieved 0.8690 ROC-AUC and 0.7184 PR-AUC on an untouched 2,000-sample test set.</p>
+            </div>
+
+            <div class="methodology-entry">
+              <h3 class="methodology-heading"><span>05</span> Risk Scoring & Calibration</h3>
+              <p class="methodology-text">Linear transformation maps churn probability to a 100-point risk score: <code>Risk Score = Churn Probability &times; 100</code>. Provisional operational tiers: Low Risk (&lt;25%), Medium Risk (25–49.9%), High Risk (&ge;50%).</p>
+            </div>
+
+            <div class="methodology-entry">
+              <h3 class="methodology-heading"><span>06</span> Responsible Use & Governance</h3>
+              <p class="methodology-text">This system is an advisory decision-support tool. In accordance with banking regulations, it must never be used to enforce punitive terms, deny accounts, or restrict credit without human review.</p>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

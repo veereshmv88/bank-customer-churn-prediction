@@ -1,0 +1,74 @@
+[
+  {
+    "feature": "Age",
+    "importance": 0.3919
+  },
+  {
+    "feature": "NumOfProducts",
+    "importance": 0.1756
+  },
+  {
+    "feature": "MultiProductRisk",
+    "importance": 0.1116
+  },
+  {
+    "feature": "IsActiveMember",
+    "importance": 0.075
+  },
+  {
+    "feature": "Balance",
+    "importance": 0.0632
+  },
+  {
+    "feature": "EngagementProductInteraction",
+    "importance": 0.0538
+  },
+  {
+    "feature": "Geography_Germany",
+    "importance": 0.0507
+  },
+  {
+    "feature": "BalanceSalaryRatio",
+    "importance": 0.0222
+  },
+  {
+    "feature": "CreditScore",
+    "importance": 0.0153
+  },
+  {
+    "feature": "EstimatedSalary",
+    "importance": 0.0136
+  },
+  {
+    "feature": "AgeTenureInteraction",
+    "importance": 0.008
+  },
+  {
+    "feature": "Gender_Male",
+    "importance": 0.0075
+  },
+  {
+    "feature": "Gender_Female",
+    "importance": 0.0057
+  },
+  {
+    "feature": "ProductDensityIndicator",
+    "importance": 0.0032
+  },
+  {
+    "feature": "Geography_France",
+    "importance": 0.0016
+  },
+  {
+    "feature": "HasCrCard",
+    "importance": 0.0009
+  },
+  {
+    "feature": "Tenure",
+    "importance": 0.0002
+  },
+  {
+    "feature": "Geography_Spain",
+    "importance": 0.0001
+  }
+]
