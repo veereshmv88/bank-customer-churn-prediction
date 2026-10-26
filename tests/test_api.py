@@ -25,6 +25,13 @@ def test_api_health(client):
     assert data["model_loaded"] is True
     assert "model_name" in data
 
+def test_healthz_route(client):
+    res = client.get("/healthz")
+    assert res.status_code == 200
+    data = res.get_json()
+    assert data["status"] == "healthy"
+    assert data["model_loaded"] is True
+
 def test_api_metadata(client):
     res = client.get("/api/metadata")
     assert res.status_code == 200
